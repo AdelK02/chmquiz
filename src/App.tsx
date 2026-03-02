@@ -38,15 +38,19 @@ export default function App() {
   const currentPageData = pages[currentPageIndex];
 
   useEffect(() => {
-    // Shuffle questions for the current page
-    setShuffledQuestions(shuffleArray(currentPageData.questions));
+    // Shuffle questions and their options for the current page
+    const processedQuestions = shuffleArray(currentPageData.questions).map(q => ({
+      ...q,
+      options: shuffleArray(q.options)
+    }));
+    setShuffledQuestions(processedQuestions);
     setCurrentQuestionIndex(0);
 
     // Clear state for the new page
     setUserAnswers({});
     setSubmittedQuestions({});
     setScores({});
-  }, [currentPageIndex]);
+  }, [currentPageIndex, currentPageData.questions]);
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
 
